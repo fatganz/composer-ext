@@ -1,4 +1,4 @@
-FROM composer/composer:1.0.0-php5
+FROM composer/composer:1.1-php5
 
 RUN apt-get update && apt-get install -y \
     libicu-dev \
