@@ -6,3 +6,5 @@ RUN apt-get update && apt-get install -y \
 
 RUN pecl install redis \
     && docker-php-ext-enable redis
+RUN useradd -ms /bin/bash composer
+USER composer
