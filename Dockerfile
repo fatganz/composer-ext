@@ -1,9 +1,16 @@
-FROM composer/composer:1.1-php5
+FROM composer:1.6
 
-RUN apt-get update && apt-get install -y \
-    libicu-dev \
-    php5-redis \
-    && docker-php-ext-install -j$(nproc) iconv intl pdo pdo_mysql mbstring bcmath
-
-RUN useradd -ms /bin/bash composer
-USER composer
+RUN apk --no-cache --virtual .build-deps add icu-dev autoconf \
+		dpkg-dev dpkg \
+		file \
+		g++ \
+		gcc \
+		libc-dev \
+		make \
+		pkgconf \
+		re2c \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && docker-php-ext-install -j$(nproc) iconv intl pdo pdo_mysql mbstring bcmath \
+    && apk del .build-deps \
+    && apk --no-cache add icu-dev
